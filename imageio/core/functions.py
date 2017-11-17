@@ -64,6 +64,9 @@ make a write function return the bytes instead of writing to a file.
 from __future__ import absolute_import, print_function, division
 
 import numpy as np
+from PIL import Image
+import requests
+from io import BytesIO
 
 from . import Request, RETURN_BYTES
 from .. import formats
@@ -197,10 +200,15 @@ def imread(uri, format=None, **kwargs):
     """ 
     
     # Get reader and read first
-    reader = read(uri, format, 'i', **kwargs)
-    with reader:
-        return reader.get_data(0)
+    try:
+        reader = read(uri, format, 'i', **kwargs)
+        with reader:
+            return reader.get_data(0)
 
+    except:
+        response = requests.get(uri)
+        return np.array(Image.open(BytesIO(response.content)))
+    
 
 def imwrite(uri, im, format=None, **kwargs):
     """ imwrite(uri, im, format=None, **kwargs)
