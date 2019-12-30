@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# Copyright (c) 2015, imageio contributors
 # imageio is distributed under the terms of the (new) BSD License.
 
 # flake8: noqa
@@ -78,12 +77,6 @@ For the Format.Writer class:
   * Implement ``_append_data(im, meta)`` to add data (and meta-data).
   * Implement ``_set_meta_data(meta)`` to set the global meta-data.
 
-If the plugin requires a binary download from the imageio-binaries
-repository, implement the ``download`` method (see e.g. the ffmpeg
-plugin). Make sure that the download directory base name matches the
-plugin name. Otherwise, the download and removal command line scripts
-(see `__main__.py`) might not work.
-
 """
 
 # First import plugins that we want to take precedence over freeimage
@@ -97,20 +90,24 @@ from . import freeimagemulti
 from . import ffmpeg
 from . import avbin
 
+from . import bsdf
 from . import dicom
 from . import npz
 from . import swf
 from . import feisem  # special kind of tiff, uses _tiffile
 
 from . import fits  # depends on astropy
-from . import simpleitk  # depends on SimpleITK
+from . import simpleitk  # depends on itk or SimpleITK
 from . import gdal  # depends on gdal
+
+from . import lytro
+from . import spe
 
 from . import example
 
 # Sort
 import os
 from .. import formats
-formats.sort(*os.getenv('IMAGEIO_FORMAT_ORDER', '').split(','))
-del os, formats
 
+formats.sort(*os.getenv("IMAGEIO_FORMAT_ORDER", "").split(","))
+del os, formats
